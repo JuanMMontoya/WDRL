@@ -1,0 +1,31 @@
+{
+    "load_file": "11000",
+    "save": false,
+    "load": true,
+    "load_data": false,
+    "save_interval": 6000,
+    "global_step": null,
+    "save_logs": true,
+
+    "train_start": 10000,
+    "batch_size": 16,
+    "mem_size": 100000,
+    "target_update_network": 10000,
+    "dropout": 1,
+    "discount": 0.95,
+    "best_thr": 300,
+
+    "dcy_lr":false,
+    "dcy_lr_val":{"dcy_stp": 1000, "dcy_rt":0.85},
+    "lr": 0.001,
+    "rms_decay": 0.95,
+    "rms_eps": 1e-6,
+    "conv_layer_sizes":    "[(16, 3, 1), (32, 3, 1)]",
+    "hidden_layer_sizes": "[256]",
+    "k": 4,
+    "mat_dim": 6,
+
+    "eps": 1.0,
+    "eps_final": 0.00000001,
+    "eps_step": 20000
+}

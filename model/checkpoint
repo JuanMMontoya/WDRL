@@ -1,0 +1,2 @@
+model_checkpoint_path: "DQN-mediumC-v1d-best"
+all_model_checkpoint_paths: "DQN-mediumC-v1d-best"
