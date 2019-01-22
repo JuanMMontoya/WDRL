@@ -30,7 +30,7 @@ class PacmanWDQN(Agent):
         self.params['height'] = args['height']
         self.params['num_training'] = args['numTraining']
         self.params['num_games'] = args['numGames']
-        self.path_extra = "" #"/data/scc/juanm/" #for cluster
+        self.path_extra = ""  # "/data/scc/juanm/" #for cluster
         self.params["seed"] = args['seed']
         self.random = np.random.RandomState(self.params["seed"])
         if self.params["only_dqn"]:
@@ -41,7 +41,7 @@ class PacmanWDQN(Agent):
             print("Initialise WDQN Agent")
 
         print(self.params["save_file"])
-        print("seed", self.params["seed"] )
+        print("seed", self.params["seed"])
 
         # Start Tensorflow session
         tf.reset_default_graph()
@@ -109,7 +109,8 @@ class PacmanWDQN(Agent):
         elif self.params["only_lin"]:
             return model.predict_lin(mat_features(self.current_state, ftrs=self.params["feat_val"]), dropout)[0]
         else:
-            return model.predict_wdqn(map_state_mat(self.current_state), mat_features(self.current_state, ftrs=self.params["feat_val"]), dropout)[0]
+            return model.predict_wdqn(map_state_mat(self.current_state),
+                                      mat_features(self.current_state, ftrs=self.params["feat_val"]), dropout)[0]
 
     def getPolicy(self, model, dropout=1.0):
         qValues = self.getQvalues(model, dropout)
@@ -163,7 +164,8 @@ class PacmanWDQN(Agent):
             if self.isInTraining():
                 # Copy values to target network
 
-                if self.local_cnt % self.params["target_update_network"] == 0 and self.local_cnt > self.params['train_start']:
+                if self.local_cnt % self.params["target_update_network"] == 0 and self.local_cnt > self.params[
+                    'train_start']:
                     self.tnet.rep_network(self.qnet)
                     print("Copied model parameters to target network. total_t = %s, period = %s" % (
                         self.local_cnt, self.params["target_update_network"]))
@@ -173,10 +175,11 @@ class PacmanWDQN(Agent):
                     self.last_state, float(self.last_reward), self.last_action, self.current_state, self.terminal)
 
                 if self.params["pickle"]:
-                    save_mem_rep_pkl(experience, self.params["save_file"],self.sub_dir, self.local_cnt, self.params["mem_size"], self.path_extra)
+                    save_mem_rep_pkl(experience, self.params["save_file"], self.sub_dir, self.local_cnt,
+                                     self.params["mem_size"], self.path_extra)
                 else:
                     save_mem_rep(experience, self.params["save_file"], self.sub_dir, self.local_cnt,
-                                     self.params["mem_size"], self.path_extra)
+                                 self.params["mem_size"], self.path_extra)
 
                 # Train
                 self.train()
@@ -194,23 +197,36 @@ class PacmanWDQN(Agent):
         # Train
         if self.local_cnt > self.params['train_start']:
             if self.params["only_dqn"]:
-                batch_s_dqn, batch_a, batch_t, qt_dqn, batch_r = extract_batches_wdqn(self.params, self.local_cnt, self.tnet, self.path_extra, self.sub_dir, GameState, self.random)
+                batch_s_dqn, batch_a, batch_t, qt_dqn, batch_r = extract_batches_wdqn(self.params, self.local_cnt,
+                                                                                      self.tnet, self.path_extra,
+                                                                                      self.sub_dir, GameState,
+                                                                                      self.random)
                 self.cnt, self.cost_disp = self.qnet.train(batch_s_dqn, None, batch_a, batch_t, qt_dqn, None, batch_r,
-                                self.params["dropout"],
-                                self.params["only_dqn"],
-                                self.params["only_lin"])
+                                                           self.params["dropout"],
+                                                           self.params["only_dqn"],
+                                                           self.params["only_lin"])
             elif self.params["only_lin"]:
-                batch_s_lin, batch_a, batch_t, qt_lin, batch_r = extract_batches_wdqn(self.params, self.local_cnt, self.tnet, self.path_extra, self.sub_dir, GameState, self.random)
-                self.cnt, self.cost_disp = self.qnet.train(None, batch_s_lin, batch_a, batch_t, None, qt_lin,  batch_r,
-                                self.params["dropout"],
-                                self.params["only_dqn"],
-                                self.params["only_lin"])
+                batch_s_lin, batch_a, batch_t, qt_lin, batch_r = extract_batches_wdqn(self.params, self.local_cnt,
+                                                                                      self.tnet, self.path_extra,
+                                                                                      self.sub_dir, GameState,
+                                                                                      self.random)
+                self.cnt, self.cost_disp = self.qnet.train(None, batch_s_lin, batch_a, batch_t, None, qt_lin, batch_r,
+                                                           self.params["dropout"],
+                                                           self.params["only_dqn"],
+                                                           self.params["only_lin"])
             else:
-                batch_s_dqn, batch_s_lin, batch_a, batch_t, qt_lin, qt_dqn, batch_r = extract_batches_wdqn(self.params, self.local_cnt, self.tnet, self.path_extra, self.sub_dir, GameState, self.random)
-                self.cnt, self.cost_disp = self.qnet.train(batch_s_dqn, batch_s_lin, batch_a, batch_t, qt_dqn, qt_lin, batch_r,
-                                self.params["dropout"],
-                                self.params["only_dqn"],
-                                self.params["only_lin"])
+                batch_s_dqn, batch_s_lin, batch_a, batch_t, qt_lin, qt_dqn, batch_r = extract_batches_wdqn(self.params,
+                                                                                                           self.local_cnt,
+                                                                                                           self.tnet,
+                                                                                                           self.path_extra,
+                                                                                                           self.sub_dir,
+                                                                                                           GameState,
+                                                                                                           self.random)
+                self.cnt, self.cost_disp = self.qnet.train(batch_s_dqn, batch_s_lin, batch_a, batch_t, qt_dqn, qt_lin,
+                                                           batch_r,
+                                                           self.params["dropout"],
+                                                           self.params["only_dqn"],
+                                                           self.params["only_lin"])
 
     def final(self, state):
 
@@ -271,13 +287,14 @@ class PacmanWDQN(Agent):
             eps_time = time.time() - self.episodeStartTime
             print('Training Done (turning off epsilon)')
             self.params["eps"] = 0.0  # no exploration
-            log_file = open('logs/testedModels/' + self.params["save_file"] +'-s-'+ str(self.params["seed"])+ '-n-' + str(
-                self.params['num_games']- self.params["num_training"]) + '.log',
-                            'a')
+            log_file = open(
+                'logs/testedModels/' + self.params["save_file"] + '-s-' + str(self.params["seed"]) + '-n-' + str(
+                    self.params['num_games'] - self.params["num_training"]) + '.log',
+                'a')
             log_file.write("# %4d |  s: %8d | t: %.2f  |  r: %12f | Q: %10f | won: %r \n" %
-                           (self.numeps, self.cnt - self.last_steps, eps_time, state.getScore() ,
+                           (self.numeps, self.cnt - self.last_steps, eps_time, state.getScore(),
                             max(self.Q_global, default=float('nan'))
-                            ,  int(self.won)))
+                            , int(self.won)))
             self.last_steps = self.cnt
         # save model
         self.save_mod(best_mod=False)
@@ -298,7 +315,8 @@ class PacmanWDQN(Agent):
         if self.params["load"]:
             try:
                 self.saver.restore(self.sess,
-                                   "".join([self.path_extra, "model/", self.params["save_file"], "-", self.params["load_file"]]))
+                                   "".join([self.path_extra, "model/", self.params["save_file"], "-",
+                                            self.params["load_file"]]))
                 # self.sess.run(tf.local_variables_initializer())
                 if not self.params["load_file"].lower() == "best":
                     print("Model Restored")
@@ -311,10 +329,12 @@ class PacmanWDQN(Agent):
 
                     # Parameters to be preserved for params when charging
                     save, save_interval, num_tr, load_data, best_thr, eps_final, dropout, decay_lr, decay_lr_val, only_dqn, only_lin, load_file, num_games, seed, save_logs = \
-                    self.params["save"], self.params["save_interval"], \
-                    self.params["num_training"], self.params["load_data"], \
-                    self.params["best_thr"], self.params["eps_final"], self.params["dropout"], self.params["dcy_lrl"], \
-                    self.params["dcy_lrl_val"], self.params["only_dqn"], self.params["only_lin"], self.params["load_file"], self.params["num_games"], self.params["seed"], self.params["save_logs"]
+                        self.params["save"], self.params["save_interval"], \
+                        self.params["num_training"], self.params["load_data"], \
+                        self.params["best_thr"], self.params["eps_final"], self.params["dropout"], self.params[
+                            "dcy_lrl"], \
+                        self.params["dcy_lrl_val"], self.params["only_dqn"], self.params["only_lin"], self.params[
+                            "load_file"], self.params["num_games"], self.params["seed"], self.params["save_logs"]
 
                     # Load saved parameters
                     self.last_steps, self.accumTrainRewards, self.numeps, self.params, self.local_cnt, self.cnt, self.sub_dir = np.load(
@@ -325,12 +345,12 @@ class PacmanWDQN(Agent):
 
                     self.params["save"], self.params["save_interval"], self.params["num_training"], \
                     self.params["load_data"], self.params["best_thr"], self.params["eps_final"], self.params["dropout"], \
-                    self.params["dcy_lrl"], self.params["dcy_lrl_val"], self.params["only_dqn"],  self.params["only_lin"], self.params["load_file"], \
-                    self.params["num_games"], self.params["seed"], self.params["save_logs"]  = save, save_interval, \
-                                                                         num_tr, load_data, best_thr, eps_final, \
-                                                                         dropout, decay_lr, decay_lr_val, only_dqn, \
-                                                                         only_lin, load_file, num_games, seed, save_logs
-
+                    self.params["dcy_lrl"], self.params["dcy_lrl_val"], self.params["only_dqn"], self.params[
+                        "only_lin"], self.params["load_file"], \
+                    self.params["num_games"], self.params["seed"], self.params["save_logs"] = save, save_interval, \
+                                                                                              num_tr, load_data, best_thr, eps_final, \
+                                                                                              dropout, decay_lr, decay_lr_val, only_dqn, \
+                                                                                              only_lin, load_file, num_games, seed, save_logs
 
                     if self.sub_dir == "best":
                         print("Best Parameters Restored")
@@ -347,7 +367,8 @@ class PacmanWDQN(Agent):
                                 [self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir])
                             del_dir(rm_dir)
                             copy_mem_rep(src=src,
-                                         dst="".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]))
+                                         dst="".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/",
+                                                      self.sub_dir]))
                             print("Data Restored")
                         else:
                             print("Best Data Restored")
@@ -365,15 +386,17 @@ class PacmanWDQN(Agent):
             best boolean saves the model at that point.
         """
         if (self.numeps % self.params["save_interval"] == 0 and self.params["save"]) or (
-            best_mod and self.params["save"]):
+                best_mod and self.params["save"]):
             self.params["global_step"] = self.cnt
             save_files = [self.last_steps, self.accumTrainRewards, self.numeps, self.params, self.local_cnt, self.cnt]
             try:
                 if best_mod:
-                    self.saver.save(self.sess, "".join([self.path_extra, "model/", self.params["save_file"], "-", "best"]))
+                    self.saver.save(self.sess,
+                                    "".join([self.path_extra, "model/", self.params["save_file"], "-", "best"]))
                     print("Best Model Saved")
                 elif not self.sub_dir == "best":
-                    self.saver.save(self.sess, "".join([self.path_extra, "model/", self.params["save_file"], "-", str(self.numeps)]))
+                    self.saver.save(self.sess, "".join(
+                        [self.path_extra, "model/", self.params["save_file"], "-", str(self.numeps)]))
                     print("Model Saved")
             except Exception as e:
                 print("Model could not be saved")
@@ -386,12 +409,14 @@ class PacmanWDQN(Agent):
                                        str(self.numeps - self.params["save_interval"])])
                     del_dir(dst)
                     del_dir(old_src)
-                    copy_mem_rep(src="".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
-                                 dst=dst)
+                    copy_mem_rep(
+                        src="".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
+                        dst=dst)
                     self.sub_dir = str(self.numeps + self.params["save_interval"])
                     save_files.append(self.sub_dir)
                     print("Memory Replay Saved")
-                    np.save("".join([self.path_extra, "parameters/", "params_", self.params["save_file"], "-", str(self.numeps)]),
+                    np.save("".join(
+                        [self.path_extra, "parameters/", "params_", self.params["save_file"], "-", str(self.numeps)]),
                             save_files)
                     print("Pameters Saved")
                 elif best_mod:  # Save memory replay of best model in directory "best" and parameters
@@ -399,7 +424,8 @@ class PacmanWDQN(Agent):
                         dst = "".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/",
                                        "best"])
                         del_dir(dst)
-                        copy_mem_rep(src="".join([self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
+                        copy_mem_rep(src="".join(
+                            [self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
                                      dst=dst)
                     save_files.append("best")
                     print("Best Memory Replay Saved")

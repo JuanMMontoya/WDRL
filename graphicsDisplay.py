@@ -45,16 +45,16 @@ GHOST_COLORS.append(formatColor(.4, 0.13, 0.91))  # Purple
 TEAM_COLORS = GHOST_COLORS[:2]
 
 GHOST_SHAPE = [
-    (0,    0.3),
+    (0, 0.3),
     (0.25, 0.75),
-    (0.5,  0.3),
+    (0.5, 0.3),
     (0.75, 0.75),
     (0.75, -0.5),
-    (0.5,  -0.75),
-    (-0.5,  -0.75),
+    (0.5, -0.75),
+    (-0.5, -0.75),
     (-0.75, -0.5),
     (-0.75, 0.75),
-    (-0.5,  0.3),
+    (-0.5, 0.3),
     (-0.25, 0.75)
 ]
 GHOST_SIZE = 0.65
@@ -64,7 +64,7 @@ GHOST_VEC_COLORS = list(map(colorToVector, GHOST_COLORS))
 
 PACMAN_COLOR = formatColor(255.0 / 255.0, 255.0 / 255.0, 61.0 / 255)
 PACMAN_SCALE = 0.5
-#pacman_speed = 0.25
+# pacman_speed = 0.25
 
 # Food
 FOOD_COLOR = formatColor(1, 1, 1)
@@ -332,8 +332,8 @@ class PacmanGraphics:
             frames = 4.0
             for i in range(1, int(frames) + 1):
                 pos = px * i / frames + fx * \
-                    (frames - i) / frames, py * i / \
-                    frames + fy * (frames - i) / frames
+                      (frames - i) / frames, py * i / \
+                      frames + fy * (frames - i) / frames
                 self.movePacman(pos, self.getDirection(pacman), image)
                 refresh()
                 sleep(abs(self.frameTime) / frames)
@@ -373,9 +373,11 @@ class PacmanGraphics:
         if dir == 'West':
             dx = -0.2
         leftEye = circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx / 1.5), screen_y -
-                          self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)), self.gridSize * GHOST_SIZE * 0.2, WHITE, WHITE)
+                          self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)), self.gridSize * GHOST_SIZE * 0.2, WHITE,
+                         WHITE)
         rightEye = circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx / 1.5), screen_y -
-                           self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)), self.gridSize * GHOST_SIZE * 0.2, WHITE, WHITE)
+                           self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)), self.gridSize * GHOST_SIZE * 0.2, WHITE,
+                          WHITE)
         leftPupil = circle((screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y -
                             self.gridSize * GHOST_SIZE * (0.3 - dy)), self.gridSize * GHOST_SIZE * 0.08, BLACK, BLACK)
         rightPupil = circle((screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y -
@@ -443,7 +445,7 @@ class PacmanGraphics:
 
     def to_screen(self, point):
         (x, y) = point
-        #y = self.height - y
+        # y = self.height - y
         x = (x + 1) * self.gridSize
         y = (self.height - y) * self.gridSize
         return (x, y)
@@ -451,7 +453,7 @@ class PacmanGraphics:
     # Fixes some TK issue with off-center circles
     def to_screen2(self, point):
         (x, y) = point
-        #y = self.height - y
+        # y = self.height - y
         x = (x + 1) * self.gridSize
         y = (self.height - y) * self.gridSize
         return (x, y)
@@ -488,11 +490,16 @@ class PacmanGraphics:
                     if (nIsWall) and (not eIsWall):
                         # vertical line
                         line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
-                                                                                (self.gridSize * WALL_RADIUS, self.gridSize * (-0.5) - 1)), wallColor)
+                                                                                (self.gridSize * WALL_RADIUS,
+                                                                                 self.gridSize * (-0.5) - 1)),
+                             wallColor)
                     if (not nIsWall) and (eIsWall):
                         # horizontal line
                         line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
-                                                                                       (self.gridSize * 0.5 + 1, self.gridSize * (-1) * WALL_RADIUS)), wallColor)
+                                                                                       (self.gridSize * 0.5 + 1,
+                                                                                        self.gridSize * (
+                                                                                            -1) * WALL_RADIUS)),
+                             wallColor)
                     if (nIsWall) and (eIsWall) and (not neIsWall):
                         # outer circle
                         circle(add(screen2, (self.gridSize * 2 * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS)),
@@ -510,11 +517,17 @@ class PacmanGraphics:
                     if (nIsWall) and (not wIsWall):
                         # vertical line
                         line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
-                                                                                       (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (-0.5) - 1)), wallColor)
+                                                                                       (self.gridSize * (
+                                                                                           -1) * WALL_RADIUS,
+                                                                                        self.gridSize * (-0.5) - 1)),
+                             wallColor)
                     if (not nIsWall) and (wIsWall):
                         # horizontal line
                         line(add(screen, (0, self.gridSize * (-1) * WALL_RADIUS)), add(screen,
-                                                                                       (self.gridSize * (-0.5) - 1, self.gridSize * (-1) * WALL_RADIUS)), wallColor)
+                                                                                       (self.gridSize * (-0.5) - 1,
+                                                                                        self.gridSize * (
+                                                                                            -1) * WALL_RADIUS)),
+                             wallColor)
                     if (nIsWall) and (wIsWall) and (not nwIsWall):
                         # outer circle
                         circle(add(screen2, (self.gridSize * (-2) * WALL_RADIUS, self.gridSize * (-2) * WALL_RADIUS)),
@@ -532,11 +545,15 @@ class PacmanGraphics:
                     if (sIsWall) and (not eIsWall):
                         # vertical line
                         line(add(screen, (self.gridSize * WALL_RADIUS, 0)), add(screen,
-                                                                                (self.gridSize * WALL_RADIUS, self.gridSize * (0.5) + 1)), wallColor)
+                                                                                (self.gridSize * WALL_RADIUS,
+                                                                                 self.gridSize * (0.5) + 1)), wallColor)
                     if (not sIsWall) and (eIsWall):
                         # horizontal line
                         line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
-                                                                                      (self.gridSize * 0.5 + 1, self.gridSize * (1) * WALL_RADIUS)), wallColor)
+                                                                                      (self.gridSize * 0.5 + 1,
+                                                                                       self.gridSize * (
+                                                                                           1) * WALL_RADIUS)),
+                             wallColor)
                     if (sIsWall) and (eIsWall) and (not seIsWall):
                         # outer circle
                         circle(add(screen2, (self.gridSize * 2 * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS)),
@@ -554,11 +571,17 @@ class PacmanGraphics:
                     if (sIsWall) and (not wIsWall):
                         # vertical line
                         line(add(screen, (self.gridSize * (-1) * WALL_RADIUS, 0)), add(screen,
-                                                                                       (self.gridSize * (-1) * WALL_RADIUS, self.gridSize * (0.5) + 1)), wallColor)
+                                                                                       (self.gridSize * (
+                                                                                           -1) * WALL_RADIUS,
+                                                                                        self.gridSize * (0.5) + 1)),
+                             wallColor)
                     if (not sIsWall) and (wIsWall):
                         # horizontal line
                         line(add(screen, (0, self.gridSize * (1) * WALL_RADIUS)), add(screen,
-                                                                                      (self.gridSize * (-0.5) - 1, self.gridSize * (1) * WALL_RADIUS)), wallColor)
+                                                                                      (self.gridSize * (-0.5) - 1,
+                                                                                       self.gridSize * (
+                                                                                           1) * WALL_RADIUS)),
+                             wallColor)
                     if (sIsWall) and (wIsWall) and (not swIsWall):
                         # outer circle
                         circle(add(screen2, (self.gridSize * (-2) * WALL_RADIUS, self.gridSize * (2) * WALL_RADIUS)),

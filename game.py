@@ -10,9 +10,6 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
-
-# gamev1.py
 # -------
 # Licensing Information: Please do not distribute or publish solutions to this
 # project. You are free to use and extend these projects for educational
@@ -24,6 +21,7 @@ from util import *
 import time
 import traceback
 import sys
+
 
 #######################
 # Parts worth reading #
@@ -58,9 +56,9 @@ class Directions:
 
     LEFT = {NORTH: WEST,
             SOUTH: EAST,
-            EAST:  NORTH,
-            WEST:  SOUTH,
-            STOP:  STOP}
+            EAST: NORTH,
+            WEST: SOUTH,
+            STOP: STOP}
 
     RIGHT = dict([(y, x) for x, y in list(LEFT.items())])
 
@@ -297,6 +295,7 @@ def reconstituteGrid(bitRep):
     width, height = bitRep[:2]
     return Grid(width, height, bitRepresentation=bitRep[2:])
 
+
 ####################################
 # Parts you shouldn't have to read #
 ####################################
@@ -309,9 +308,9 @@ class Actions:
     # Directions
     _directions = {Directions.NORTH: (0, 1),
                    Directions.SOUTH: (0, -1),
-                   Directions.EAST:  (1, 0),
-                   Directions.WEST:  (-1, 0),
-                   Directions.STOP:  (0, 0)}
+                   Directions.EAST: (1, 0),
+                   Directions.WEST: (-1, 0),
+                   Directions.STOP: (0, 0)}
 
     _directionsAsList = list(_directions.items())
 
@@ -327,6 +326,7 @@ class Actions:
         if action == Directions.WEST:
             return Directions.EAST
         return action
+
     reverseDirection = staticmethod(reverseDirection)
 
     def vectorToDirection(vector):
@@ -340,11 +340,13 @@ class Actions:
         if dx > 0:
             return Directions.EAST
         return Directions.STOP
+
     vectorToDirection = staticmethod(vectorToDirection)
 
     def directionToVector(direction, speed=1.0):
         dx, dy = Actions._directions[direction]
         return (dx * speed, dy * speed)
+
     directionToVector = staticmethod(directionToVector)
 
     def getPossibleActions(config, walls):
@@ -382,12 +384,14 @@ class Actions:
             if not walls[next_x][next_y]:
                 neighbors.append((next_x, next_y))
         return neighbors
+
     getLegalNeighbors = staticmethod(getLegalNeighbors)
 
     def getSuccessor(position, action):
         dx, dy = Actions.directionToVector(action)
         x, y = position
         return (x + dx, y + dy)
+
     getSuccessor = staticmethod(getSuccessor)
 
 
@@ -459,7 +463,8 @@ class GameStateData:
             except TypeError(e):
                 print(e)
                 # hash(state)
-        return int((hash(tuple(self.agentStates)) + 13 * hash(self.food) + 113 * hash(tuple(self.capsules)) + 7 * hash(self.score)) % 1048575)
+        return int((hash(tuple(self.agentStates)) + 13 * hash(self.food) + 113 * hash(tuple(self.capsules)) + 7 * hash(
+            self.score)) % 1048575)
 
     def __str__(self):
         width, height = self.layout.width, self.layout.height
@@ -520,7 +525,7 @@ class GameStateData:
         Creates an initial game state from a layout array (see layout.py).
         """
         self.food = layout.food.copy()
-        #self.capsules = []
+        # self.capsules = []
         self.capsules = layout.capsules[:]
         self.layout = layout
         self.score = 0
@@ -538,8 +543,10 @@ class GameStateData:
                 Configuration(pos, Directions.STOP), isPacman))
         self._eaten = [False for a in self.agentStates]
 
+
 try:
     import boinc
+
     _BOINC_ENABLED = True
 except:
     _BOINC_ENABLED = False
@@ -552,7 +559,7 @@ class Game:
 
     def __init__(self, agents, display, rules, startingIndex=0, muteAgents=False, catchExceptions=False):
         self.agentCrashed = False
-        self.max_pac_steps = 1000000   # maximal amount of steps before pacman dies
+        self.max_pac_steps = 1000000  # maximal amount of steps before pacman dies
         self.agents = agents
         self.display = display
         self.rules = rules
@@ -608,7 +615,7 @@ class Game:
         """
         self.display.initialize(self.state.data)
         self.numMoves = 0
-        #steps_pac = 0
+        # steps_pac = 0
         # self.display.initialize(self.state.makeObservation(1).data)
         # inform learning agents of the game start
         for i in range(len(self.agents)):
@@ -733,7 +740,7 @@ class Game:
                     self.unmute()
                     return
             else:
-               action = agent.getAction(observation)
+                action = agent.getAction(observation)
             self.unmute()
 
             # Execute the action
@@ -768,7 +775,7 @@ class Game:
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state, self)
             # Track progress
-            if (agentIndex + 1) == numAgents :
+            if (agentIndex + 1) == numAgents:
                 self.numMoves += 1
             # Next agent
             agentIndex = (agentIndex + 1) % numAgents

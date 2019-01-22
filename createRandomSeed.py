@@ -1,4 +1,4 @@
-# Pick a Random Number for testing the efficiency of models
+# Picked the Random Number for testing the models
 import random as r
 import os
 import _pickle as cPickle

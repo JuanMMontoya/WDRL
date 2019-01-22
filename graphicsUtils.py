@@ -22,13 +22,13 @@ import tkinter
 
 _Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
-_root_window = None      # The root window for graphics output
-_canvas = None      # The canvas which holds graphics
-_canvas_xs = None      # Size of canvas object
+_root_window = None  # The root window for graphics output
+_canvas = None  # The canvas which holds graphics
+_canvas_xs = None  # Size of canvas object
 _canvas_ys = None
-_canvas_x = None      # Current position on canvas
+_canvas_x = None  # Current position on canvas
 _canvas_y = None
-_canvas_col = None      # Current colour (set to black below)
+_canvas_col = None  # Current colour (set to black below)
 _canvas_tsize = 12
 _canvas_tserifs = 0
 
@@ -39,6 +39,7 @@ def formatColor(r, g, b):
 
 def colorToVector(color):
     return [int(x, 16) / 256.0 for x in [color[1:3], color[3:5], color[5:7]]]
+
 
 if _Windows:
     _canvas_tfonts = ['times new roman', 'lucida console']
@@ -58,7 +59,6 @@ def sleep(secs):
 
 
 def begin_graphics(width=640, height=480, color=formatColor(0, 0, 0), title=None):
-
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys, _bg_color
 
     # Check for duplicate call
@@ -97,6 +97,7 @@ def begin_graphics(width=640, height=480, color=formatColor(0, 0, 0), title=None
     _root_window.bind("<Button-3>", _rightclick)
     _root_window.bind("<Control-Button-1>", _ctrl_leftclick)
     _clear_keys()
+
 
 _leftclick_loc = None
 _rightclick_loc = None
@@ -147,10 +148,12 @@ def draw_background():
 
 def _destroy_window(event=None):
     sys.exit(0)
+
+
 #    global _root_window
 #    _root_window.destroy()
 #    _root_window = None
-    # print "DESTROY"
+# print "DESTROY"
 
 
 def end_graphics():
@@ -227,8 +230,8 @@ def moveCircle(id, pos, r, endpoints=None):
     global _canvas_x, _canvas_y
 
     x, y = pos
-#    x0, x1 = x - r, x + r + 1
-#    y0, y1 = y - r, y + r + 1
+    #    x0, x1 = x - r, x + r + 1
+    #    y0, y1 = y - r, y + r + 1
     x0, x1 = x - r - 1, x + r
     y0, y1 = y - r - 1, y + r
     if endpoints == None:
@@ -268,6 +271,7 @@ def line(here, there, color=formatColor(0, 0, 0), width=2):
     x1, y1 = there[0], there[1]
     return _canvas.create_line(x0, y0, x1, y1, fill=color, width=width)
 
+
 ##############################################################################
 ### Keypress handling ########################################################
 ##############################################################################
@@ -286,7 +290,7 @@ def _keypress(event):
     # remap_arrows(event)
     _keysdown[event.keysym] = 1
     _keyswaiting[event.keysym] = 1
-#    print event.char, event.keycode
+    #    print event.char, event.keycode
     _got_release = None
 
 
@@ -323,8 +327,7 @@ def _clear_keys(event=None):
 
 def keys_pressed(d_o_e=None,
                  d_w=tkinter._tkinter.DONT_WAIT):
-
-    if(d_o_e is None):
+    if (d_o_e is None):
         d_o_e = _root_window.dooneevent
     d_o_e(d_w)
     if _got_release:
@@ -337,6 +340,7 @@ def keys_waiting():
     keys = list(_keyswaiting.keys())
     _keyswaiting = {}
     return keys
+
 
 # Block for a list of keys...
 
@@ -427,6 +431,7 @@ def writePostscript(filename):
                                     y='0.c',
                                     x='0.c'))
     psfile.close()
+
 
 ghost_shape = [
     (0, - 0.5),

@@ -30,7 +30,7 @@ class GhostAgent(Agent):
         if len(dist) == 0:
             return Directions.STOP
         else:
-            return util.chooseFromDistribution(dist)  #here random component
+            return util.chooseFromDistribution(dist)  # here random component
 
     def getDistribution(self, state):
         "Returns a Counter encoding a distribution over actions from the provided state."

@@ -21,17 +21,19 @@ from DQN import DQN
 
 
 class PacmanDQN(Agent):
+    """
+    Creates the Deep Q-Network Agent that iterates with the environment
+    """
+
     def __init__(self, args):
-
         print("Initialise DQN Agent")
-
         # Load parameters from user-given arguments
         self.params = json_to_dict(args["path"])
         self.params['width'] = args['width']
         self.params['height'] = args['height']
         self.params['num_training'] = args['numTraining']
         self.params['num_games'] = args['numGames']
-        self.path_extra = ""  # ""/data/scc/juanm/" #for cluster
+        self.path_extra = ""
         self.params["seed"] = args['seed']
         self.random = np.random.RandomState(self.params["seed"])
         print(self.params["save_file"])
@@ -48,7 +50,7 @@ class PacmanDQN(Agent):
         self.tnet.set_session(self.sess)
         self.sess.run(tf.global_variables_initializer())
 
-        # time started
+        # Time started
         self.general_record_time = time.strftime("%a_%d_%b_%Y_%H_%M_%S", time.localtime())
 
         # Q and cost
@@ -70,7 +72,8 @@ class PacmanDQN(Agent):
         self.accumTrainRewards = 0.0
         self.sub_dir = str(self.params["save_interval"])
 
-    def registerInitialState(self, state):  # inspects the starting state
+    def registerInitialState(self, state):
+        """Inspects the starting state"""
         # Reset reward
         self.last_score = 0
         self.last_reward = 0.
@@ -94,11 +97,12 @@ class PacmanDQN(Agent):
         self.numeps += 1
 
     def getQvalues(self, model, dropout):
+        """Access Q Values by using the model prediction"""
         return model.predict(map_state_mat(self.current_state), dropout)[0]
 
     def getPolicy(self, model, dropout=1.0):
+        """Pick up the policy """
         qValues = self.getQvalues(model, dropout)
-        # qVal = {self.get_value[l]:qValues[self.get_value[l]] for l in self.current_state.getLegalActions(0)}
         qVal = {self.get_value[l]: qValues[self.get_value[l]] for l in self.current_state.getLegalActions(0) if
                 not l == "Stop"}
         maxValue = max(qVal.values())
@@ -106,33 +110,33 @@ class PacmanDQN(Agent):
         return self.get_direction(self.random.choice([k for k in qVal.keys() if qVal[k] == maxValue]))
 
     def getAction(self, state):
-        # Exploit / Explore
-        # print("Eps ", self.params['eps'])
+        """Exploit / Explore"""
         if self.random.rand() > self.params['eps']:
             # Exploit action
             move = self.getPolicy(self.qnet)  # dropout deactivated
         else:
-            # Random:
-            # legal = state.getLegalActions(0)
             legal = [v for v in state.getLegalActions(0) if not v == "Stop"]
             move = self.random.choice(legal)
-            # move = self.get_direction(np.random.randint(0, 4))
-
         # Save last_action
         self.last_action = self.get_value[move]
         return move
 
     def observationFunction(self, state):
-        # Do observation
+        """Do observation"""
         self.terminal = False
         self.observation_step(state)
         return state
 
     def observation_step(self, state):
+        """
+        Realize the observation step
+        Rewards are balanced in this part
+        The training occurs in this section
+        """
         if self.last_action is not None:
             # Process current experience state
-            self.last_state = self.current_state.deepCopy()  # np.copy(self.current_state)
-            self.current_state = state  # getStateMatrices(state)
+            self.last_state = self.current_state.deepCopy()
+            self.current_state = state
             # Process current experience reward
             reward = state.getScore() - self.last_score
             self.last_score = state.getScore()
@@ -151,15 +155,14 @@ class PacmanDQN(Agent):
                 self.last_reward = 100.
 
             if self.isInTraining():
-                if self.local_cnt % self.params["target_update_network"] == 0 and self.local_cnt > self.params[
-                    'train_start']:
+                if self.local_cnt % self.params["target_update_network"] == 0 and \
+                        self.local_cnt > self.params['train_start']:
                     self.tnet.rep_network(self.qnet)
                     print("Copied model parameters to target network. total_t = %s, period = %s" % (
-                    self.local_cnt, self.params["target_update_network"]))
-
+                        self.local_cnt, self.params["target_update_network"]))
                 # Store last experience into memory
                 experience = (
-                self.last_state, float(self.last_reward), self.last_action, self.current_state, self.terminal)
+                    self.last_state, float(self.last_reward), self.last_action, self.current_state, self.terminal)
 
                 if self.params["pickle"]:
                     save_mem_rep_pkl(experience, self.params["save_file"], self.sub_dir, self.local_cnt,
@@ -182,7 +185,7 @@ class PacmanDQN(Agent):
                                          1.00 - float(self.cnt) / float(self.params['eps_step']))
 
     def train(self):
-        # Train
+        """Train"""
         if self.local_cnt > self.params['train_start']:
             batch_s, batch_a, batch_t, q_t, batch_r = extract_batches_dqn(self.params, self.local_cnt, self.tnet,
                                                                           self.path_extra, self.sub_dir, GameState,
@@ -190,20 +193,15 @@ class PacmanDQN(Agent):
             self.cnt, self.cost_disp = self.qnet.train(batch_s, batch_a, batch_t, q_t, batch_r, self.params["dropout"])
 
     def final(self, state):
-
-        # Do observation
+        """Inspects the last state"""
         self.terminal = True
         self.observation_step(state)
-
-        # if (self.local_cnt > self.params['train_start']):
         NUM_EPS_UPDATE = 100
-        self.lastWindowAccumRewards += state.getScore()  #
+        self.lastWindowAccumRewards += state.getScore()
         self.accumTrainRewards += state.getScore()
         self.Q_accumulative += max(self.Q_global, default=float('nan'))
         self.wins += self.won
-
         if self.numeps % NUM_EPS_UPDATE == 0:
-            # Print stats
             eps_time = time.time() - self.episodeStartTime
             print('Reinforcement Learning Status:')
             if self.numeps <= self.params['num_training']:
@@ -261,19 +259,20 @@ class PacmanDQN(Agent):
         self.save_mod(best_mod=False)
 
     def isInTraining(self):
+        """Check is if agent is in training"""
         return self.numeps < self.params["num_training"]
 
     def isInTesting(self):
+        """Check is if agent is in testing"""
         return not self.isInTraining()
 
     def load_mod(self):
-        # load data and model
+        """ Load data and model"""
         if self.params["load"]:
             try:
                 self.saver.restore(self.sess,
                                    "".join([self.path_extra, "model/", self.params["save_file"], "-",
                                             self.params["load_file"]]))
-                # self.sess.run(tf.local_variables_initializer())
                 if not self.params["load_file"].lower() == "best":
                     print("Model Restored")
                 else:
@@ -333,11 +332,11 @@ class PacmanDQN(Agent):
                 print("Model don't exist or could not be properly loaded")
 
     def save_mod(self, best_mod=False):
-        """Saving model and parameters
-            best boolean saves the model at that point.
+        """
+        Saving model and parameters
         """
         if (self.numeps % self.params["save_interval"] == 0 and self.params["save"]) or (
-                    best_mod and self.params["save"]):
+                best_mod and self.params["save"]):
             self.params["global_step"] = self.cnt
             save_files = [self.last_steps, self.accumTrainRewards, self.numeps, self.params, self.local_cnt, self.cnt]
             try:
@@ -368,7 +367,7 @@ class PacmanDQN(Agent):
                     print("Memory Replay Saved")
                     np.save("".join(
                         [self.path_extra, "parameters/", "params_", self.params["save_file"], "-", str(self.numeps)]),
-                            save_files)
+                        save_files)
                     print("Pameters Saved")
                 elif best_mod:  # Save memory replay of best model in directory "best" and parameters
                     if not self.sub_dir == "best":
@@ -377,7 +376,7 @@ class PacmanDQN(Agent):
                         del_dir(dst)
                         copy_mem_rep(src="".join(
                             [self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
-                                     dst=dst)
+                            dst=dst)
                     save_files.append("best")
                     print("Best Memory Replay Saved")
                     np.save("".join([self.path_extra, "parameters/", "params_", self.params["save_file"], "-", "best"]),
