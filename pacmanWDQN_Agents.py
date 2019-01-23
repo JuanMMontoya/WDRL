@@ -1,12 +1,9 @@
-# Used code from
-# WDL implementation by Juan Montoya
-# Used code from:
-# The Pacman AI projects were developed at UC Berkeley found at
-# http://ai.berkeley.edu/project_overview.html
 """
-V3
--get_onehot just with numpy
-based on pacman_DQN V12
+Author: Juan M. Montoya
+Class structure based on pacmanDQN_Agents.py
+
+The Pacman AI projects were developed at UC Berkeley found at
+http://ai.berkeley.edu/project_overview.html
 """
 
 from util import *
@@ -14,15 +11,18 @@ from util import *
 # Pacman game
 from game import Agent
 from pacman import GameState
-import game
 
 # Neural nets
-import os
 import tensorflow as tf
 from WDQN import WDQN
 
 
 class PacmanWDQN(Agent):
+    """
+        Creates the Wide Deep Q-Network Agent that iterates with the environment
+        In addition, this agent can be set up to purely Linear or DQN Agent
+        """
+
     def __init__(self, args):
         # Load parameters from user-given arguments
         self.params = json_to_dict(args["path"])
@@ -30,7 +30,7 @@ class PacmanWDQN(Agent):
         self.params['height'] = args['height']
         self.params['num_training'] = args['numTraining']
         self.params['num_games'] = args['numGames']
-        self.path_extra = ""  # "/data/scc/juanm/" #for cluster
+        self.path_extra = ""
         self.params["seed"] = args['seed']
         self.random = np.random.RandomState(self.params["seed"])
         if self.params["only_dqn"]:
@@ -79,8 +79,8 @@ class PacmanWDQN(Agent):
         self.accumTrainRewards = 0.0
         self.sub_dir = str(self.params["save_interval"])
 
-    def registerInitialState(self, state):  # inspects the starting state
-
+    def registerInitialState(self, state):
+        """Inspects the starting state"""
         # Reset reward
         self.last_score = 0
         self.last_reward = 0.
@@ -104,6 +104,7 @@ class PacmanWDQN(Agent):
         self.numeps += 1
 
     def getQvalues(self, model, dropout):
+        """Access Q Values by using the model prediction of WDQN.py"""
         if self.params["only_dqn"]:
             return model.predict_dqn(map_state_mat(self.current_state), dropout)[0]
         elif self.params["only_lin"]:
@@ -113,8 +114,8 @@ class PacmanWDQN(Agent):
                                       mat_features(self.current_state, ftrs=self.params["feat_val"]), dropout)[0]
 
     def getPolicy(self, model, dropout=1.0):
+        """Pick up the policy """
         qValues = self.getQvalues(model, dropout)
-        # qVal = {self.get_value[l]:qValues[self.get_value[l]] for l in self.current_state.getLegalActions(0)}
         qVal = {self.get_value[l]: qValues[self.get_value[l]] for l in self.current_state.getLegalActions(0) if
                 not l == "Stop"}
         maxValue = max(qVal.values())
@@ -122,7 +123,7 @@ class PacmanWDQN(Agent):
         return self.get_direction(self.random.choice([k for k in qVal.keys() if qVal[k] == maxValue]))
 
     def getAction(self, state):
-        # Exploit / Explore
+        """Exploit / Explore"""
         if self.random.rand() > self.params['eps']:
             # Exploit action
             move = self.getPolicy(self.qnet)  # dropout deactivated
@@ -134,38 +135,42 @@ class PacmanWDQN(Agent):
         return move
 
     def observationFunction(self, state):
-        # Do observation
+        """Do observation"""
         self.terminal = False
         self.observation_step(state)
         return state
 
     def observation_step(self, state):
+        """
+        Realize the observation step
+        Rewards are balanced in this part
+        The training occurs in this section
+        """
         if self.last_action is not None:
             # Process current experience state
-            self.last_state = self.current_state.deepCopy()  # np.copy(self.current_state)
-            self.current_state = state  # getStateMatrices(state)
+            self.last_state = self.current_state.deepCopy()
+            self.current_state = state
             # Process current experience reward
             reward = state.getScore() - self.last_score
             self.last_score = state.getScore()
-
+            # Reward system
             if reward > 20:
-                self.last_reward = 50.  # Eat ghost   (Yum! Yum!)
+                self.last_reward = 50.  # Eat ghost
             elif reward > 0:
-                self.last_reward = 10.  # Eat food    (Yum!)
+                self.last_reward = 10.  # Eat food
             elif reward < -10:
-                self.last_reward = -500.  # Get eaten   (Ouch!)
+                self.last_reward = -500.  # Get eaten
                 self.won = False
             elif reward < 0:
-                self.last_reward = -1.  # Punish time (Pff..)
+                self.last_reward = -1.  # Punish time
 
             if (self.terminal and self.won):
                 self.last_reward = 100.
 
             if self.isInTraining():
                 # Copy values to target network
-
-                if self.local_cnt % self.params["target_update_network"] == 0 and self.local_cnt > self.params[
-                    'train_start']:
+                if self.local_cnt % self.params["target_update_network"] == 0 \
+                        and self.local_cnt > self.params['train_start']:
                     self.tnet.rep_network(self.qnet)
                     print("Copied model parameters to target network. total_t = %s, period = %s" % (
                         self.local_cnt, self.params["target_update_network"]))
@@ -194,7 +199,7 @@ class PacmanWDQN(Agent):
                                          1.00 - float(self.cnt) / float(self.params['eps_step']))
 
     def train(self):
-        # Train
+        """Train different agents: WDQN, DQN and Linear"""
         if self.local_cnt > self.params['train_start']:
             if self.params["only_dqn"]:
                 batch_s_dqn, batch_a, batch_t, qt_dqn, batch_r = extract_batches_wdqn(self.params, self.local_cnt,
@@ -229,12 +234,10 @@ class PacmanWDQN(Agent):
                                                            self.params["only_lin"])
 
     def final(self, state):
-
+        """Inspects the last state"""
         # Do observation
         self.terminal = True
         self.observation_step(state)
-
-        # if (self.local_cnt > self.params['train_start']):
         NUM_EPS_UPDATE = 100
         self.lastWindowAccumRewards += state.getScore()  #
         self.accumTrainRewards += state.getScore()
@@ -299,25 +302,21 @@ class PacmanWDQN(Agent):
         # save model
         self.save_mod(best_mod=False)
 
-    def get_onehot(self, actions):
-        actions_onehot = np.zeros((self.params['batch_size'], self.params["k"]))
-        actions_onehot[np.arange(self.params['batch_size']), actions] = 1
-        return actions_onehot
-
     def isInTraining(self):
+        """Check is if agent is in training"""
         return self.numeps < self.params["num_training"]
 
     def isInTesting(self):
+        """Check is if agent is in testing"""
         return not self.isInTraining()
 
     def load_mod(self):
-        # load data and model
+        """ Load data and model"""
         if self.params["load"]:
             try:
                 self.saver.restore(self.sess,
                                    "".join([self.path_extra, "model/", self.params["save_file"], "-",
                                             self.params["load_file"]]))
-                # self.sess.run(tf.local_variables_initializer())
                 if not self.params["load_file"].lower() == "best":
                     print("Model Restored")
                 else:
@@ -382,8 +381,9 @@ class PacmanWDQN(Agent):
             self.params["load"] = False
 
     def save_mod(self, best_mod=False):
-        """Saving model and parameters
-            best boolean saves the model at that point.
+        """
+        Saving model and parameters
+        Possibility of saving the best model
         """
         if (self.numeps % self.params["save_interval"] == 0 and self.params["save"]) or (
                 best_mod and self.params["save"]):
@@ -417,7 +417,7 @@ class PacmanWDQN(Agent):
                     print("Memory Replay Saved")
                     np.save("".join(
                         [self.path_extra, "parameters/", "params_", self.params["save_file"], "-", str(self.numeps)]),
-                            save_files)
+                        save_files)
                     print("Pameters Saved")
                 elif best_mod:  # Save memory replay of best model in directory "best" and parameters
                     if not self.sub_dir == "best":
@@ -426,7 +426,7 @@ class PacmanWDQN(Agent):
                         del_dir(dst)
                         copy_mem_rep(src="".join(
                             [self.path_extra, "data/mem_rep_", self.params["save_file"], "/", self.sub_dir]),
-                                     dst=dst)
+                            dst=dst)
                     save_files.append("best")
                     print("Best Memory Replay Saved")
                     np.save("".join([self.path_extra, "parameters/", "params_", self.params["save_file"], "-", "best"]),

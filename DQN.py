@@ -1,3 +1,6 @@
+"""
+Author: Juan M. Montoya
+"""
 import tensorflow as tf
 
 
@@ -17,7 +20,8 @@ class DQN:
             self.keep_prob = tf.placeholder(tf.float32)
             Z = self.x
             channels = params["mat_dim"]
-            # Initialize the convolutional layers
+
+            # ConvNets
             for filters, size, stride in params["conv_layer_sizes"]:
                 w = tf.Variable(tf.random_normal([size, size, channels, filters], stddev=0.01))
                 b = tf.Variable(tf.constant(0.1, shape=[filters]))

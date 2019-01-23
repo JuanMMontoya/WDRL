@@ -1,7 +1,13 @@
+"""
+Author: Juan M. Montoya
+"""
 import tensorflow as tf
 
 class WDQN:
     def __init__(self, params, scope):
+        """
+        Creates the Deep Q-Network Agent's model using Tensorflow
+        """
         self.scope = scope
         with tf.variable_scope(scope):
             self.x_dqn = tf.placeholder(tf.float32, shape=(None, params['width'], params['height'], params["mat_dim"]),
@@ -16,7 +22,7 @@ class WDQN:
             self.keep_prob = tf.placeholder(tf.float32)
             self.discount = tf.constant(params['discount'])
 
-            # Linear approximator
+            # Linear Agent
             Z_lin = self.x_lin
             w_lin = tf.Variable(tf.zeros([params["features"], 1], dtype=tf.float32, name="weightsLin"))
             self.y_lin = tf.einsum('ijk,kl->ijl', Z_lin, w_lin)
@@ -28,7 +34,7 @@ class WDQN:
             self.Q_pred_lin = tf.reduce_sum(tf.multiply(self.y_lin, self.actions), reduction_indices=1)
             self.cost_lin = tf.reduce_sum(tf.pow(tf.subtract(self.yj_lin, self.Q_pred_lin), 2))
 
-            # DQN
+            # ConvNets
             Z_dqn = self.x_dqn
             channels = params["mat_dim"]
             for filters, size, stride in params["conv_layer_sizes"]:
@@ -81,21 +87,21 @@ class WDQN:
                                                                                staircase=True),
                                   lambda: params["lr_lin"])
 
-            # Optimization
+            # Optimization for linear and DQN model
             self.optim_lin = tf.train.GradientDescentOptimizer(self.lr_lin).minimize(self.cost_lin,
                                                                                      global_step=self.global_step_lin)
 
-            # self.optim = tf.train.RMSPropOptimizer(params['lr'],params['rms_decay'],0.0,params['rms_eps']).minimize(self.cost,global_step=self.global_step)
             self.optim_dqn = tf.train.AdamOptimizer(params['lr_dqn']).minimize(self.cost_dqn,
                                                                                global_step=self.global_step_dqn)
 
-            # Prediction for Weight Deep Reinforcement Learning
+            # Prediction for Wide Deep Q-Network Agent
             self.y_wdqn = tf.add(self.y_lin, self.y_dqn)
 
     def train(self, bat_s_dqn, bat_s_lin, bat_a, bat_t, qt_dqn, qt_lin, bat_r, dropout, only_dqn, only_lin):
         """
         Charge of training and calculating cost using Tf
-        for WDQN combinig train_dqn, train_lin. Can also predict for DQN or LinApprox.
+        for WDQN combining train_dqn, train_lin
+        Can also predict purely for DQN or Linear Agent
         """
         if only_dqn:
             _, cnt_dqn, cost_dqn = self.train_dqn(bat_s_dqn, bat_a, bat_t, qt_dqn, bat_r, dropout)
@@ -109,6 +115,7 @@ class WDQN:
             return cnt_dqn, cost_dqn + cost_lin
 
     def train_dqn(self, bat_s_dqn, bat_a, bat_t, qt_dqn, bat_r, dropout):
+        """Carry on the training for DQN """
         feed_dict_dqn = {self.x_dqn: bat_s_dqn, self.qt_dqn: qt_dqn, self.actions: bat_a, self.terminals: bat_t,
                          self.rewards: bat_r, self.keep_prob: dropout}
         _, cnt_dqn, cost_dqn = self.sess.run([self.optim_dqn, self.global_step_dqn, self.cost_dqn],
@@ -116,6 +123,7 @@ class WDQN:
         return _, cnt_dqn, cost_dqn
 
     def train_lin(self, bat_s_lin, bat_a, bat_t, qt_lin, bat_r, dropout):
+        """Carry on the training for linear model """
         feed_dict_lin = {self.x_lin: bat_s_lin, self.qt_lin: qt_lin, self.actions: bat_a, self.terminals: bat_t,
                          self.rewards: bat_r, self.keep_prob: dropout}
         _, cnt_lin, cost_lin = self.sess.run([self.optim_lin, self.global_step_lin, self.cost_lin],
@@ -126,7 +134,6 @@ class WDQN:
         """
         Replace parameter of network with giving new Param.
         In charge of substitution between Q-Target Network and Q-Network
-        :param other: new parameters from Target Network
         """
         mine = [t for t in tf.trainable_variables() if t.name.startswith(self.scope)]
         mine = sorted(mine, key=lambda v: v.name)
@@ -142,15 +149,12 @@ class WDQN:
     def set_session(self, sess):
         """
         Fix the Tensor Flow session
-        :param session: Tf session object
         """
         self.sess = sess
 
     def predict_wdqn(self, states_dqn, states_lin, dropout):
         """
         Makes predictions for WDQN
-        :param X: v-value with state
-        :return: list with actions
         """
         pred = self.sess.run(self.y_wdqn,
                              feed_dict={self.x_dqn: states_dqn, self.x_lin: states_lin, self.keep_prob: dropout})
@@ -159,8 +163,6 @@ class WDQN:
     def predict_dqn(self, states, dropout):
         """
         Makes DQN-predictions
-        :param X: v-value with state
-        :return: list with actions
         """
         pred_dqn = self.sess.run(self.y_dqn,
                                  feed_dict={self.x_dqn: states, self.keep_prob: dropout})
@@ -169,8 +171,6 @@ class WDQN:
     def predict_lin(self, states, dropout):
         """
         Makes Linear predictions
-        :param X: v-value with state
-        :return: list with actions
         """
         pred_dqn = self.sess.run(self.y_lin,
                                  feed_dict={self.x_lin: states, self.keep_prob: dropout})

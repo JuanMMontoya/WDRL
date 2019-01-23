@@ -1,5 +1,6 @@
 """
-Partially used code from
+Author: Juan M. Montoya
+Code Based on
 DQN implementation by Tejas Kulkarni found at
 https://github.com/mrkulk/deepQN_tensorflow
 
@@ -97,7 +98,7 @@ class PacmanDQN(Agent):
         self.numeps += 1
 
     def getQvalues(self, model, dropout):
-        """Access Q Values by using the model prediction"""
+        """Access Q Values by using the model prediction of DQN.py"""
         return model.predict(map_state_mat(self.current_state), dropout)[0]
 
     def getPolicy(self, model, dropout=1.0):
@@ -140,16 +141,16 @@ class PacmanDQN(Agent):
             # Process current experience reward
             reward = state.getScore() - self.last_score
             self.last_score = state.getScore()
-
+            # Reward system
             if reward > 20:
-                self.last_reward = 50.  # Eat ghost   (Yum! Yum!)
+                self.last_reward = 50.  # Eat ghost
             elif reward > 0:
-                self.last_reward = 10.  # Eat food    (Yum!)
+                self.last_reward = 10.  # Eat food
             elif reward < -10:
-                self.last_reward = -500.  # Get eaten   (Ouch!)
+                self.last_reward = -500.  # Get eaten
                 self.won = False
             elif reward < 0:
-                self.last_reward = -1.  # Punish time (Pff..)
+                self.last_reward = -1.  # Punish time
 
             if (self.terminal and self.won):
                 self.last_reward = 100.
@@ -334,6 +335,7 @@ class PacmanDQN(Agent):
     def save_mod(self, best_mod=False):
         """
         Saving model and parameters
+        Possibility of saving the best model
         """
         if (self.numeps % self.params["save_interval"] == 0 and self.params["save"]) or (
                 best_mod and self.params["save"]):
