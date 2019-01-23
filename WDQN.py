@@ -14,7 +14,7 @@ class WDQN:
             self.x_dqn = tf.placeholder(tf.float32, shape=(None, params['width'], params['height'], params["mat_dim"]),
                                         name="x_dqn")  # DQN
             self.x_lin = tf.placeholder(tf.float32, [None, params["k"], params["features"]],
-                                        name="x_lin")  # linear approximator
+                                        name="x_lin")  # Linear approximator
             self.qt_dqn = tf.placeholder(tf.float32, shape=(None,), name="G1")
             self.qt_lin = tf.placeholder(tf.float32, shape=(None,), name="G2")
             self.actions = tf.placeholder(tf.float32, shape=(None, params["k"]), name="actions")
