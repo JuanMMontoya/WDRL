@@ -99,10 +99,10 @@ class WDQN:
 
     def train(self, bat_s_dqn, bat_s_lin, bat_a, bat_t, qt_dqn, qt_lin, bat_r, dropout, only_dqn, only_lin):
         """
-        Charge of training and calculating cost using Tf
-        for WDQN combining train_dqn, train_lin
+        Charge of training and calculating cost
         Can also predict purely for DQN or Linear Agent
         """
+        # WDQN combines train_dqn, train_lin
         if only_dqn:
             _, cnt_dqn, cost_dqn = self.train_dqn(bat_s_dqn, bat_a, bat_t, qt_dqn, bat_r, dropout)
             return cnt_dqn, cost_dqn
