@@ -6,7 +6,8 @@ import tensorflow as tf
 class WDQN:
     def __init__(self, params, scope):
         """
-        Creates the Deep Q-Network Agent's model using Tensorflow
+        Creates the Wide Deep Q-Network Agent's model using Tensorflow
+        Can also initialize DQN or Linear Agent's model
         """
         self.scope = scope
         with tf.variable_scope(scope):
