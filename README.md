@@ -8,8 +8,8 @@ Wide Deep Reinforcement Learning search to combine both the linear function (wid
 For our research, we extended the popular Deep Q-Network (DQN) algorithm by mixing the linear combination of features with the convolutional neural networks as illustrated below.
 In this way, developing the Wide Deep Q-Network algorithm. 
 
-
-<img src="https://github.com/JuanMMontoya/WDRL/blob/master/media/WDRL.pdf" alt="some text"  width="4200" height="4200">
+![](media/WDRL.jpg?raw=true)
+<img src="https://github.com/JuanMMontoya/WDRL/blob/master/media/WDRL.jpg" alt="some text"  width="4200" height="4200">
 
 ## Demo
 
