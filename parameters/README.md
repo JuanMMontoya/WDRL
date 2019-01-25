@@ -1,7 +1,6 @@
-** DICT Folder: **
+** Parameters Folder **
 
-This part has the json files containing the parameters for initializing the DQN, Linear and WDQN agents.
+The npy files save the parameters necessary for loading DQN, Linear and WDQN agents.
 
-The abbreviations have the following meaning:
+The following variables are saved in the npy files:
 
-LIST

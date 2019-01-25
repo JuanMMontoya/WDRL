@@ -1,8 +1,8 @@
 """
 Author: Juan M. Montoya
 Code Based on
-DQN implementation by Tejas Kulkarni found at
-https://github.com/mrkulk/deepQN_tensorflow
+PacmanDQN implementation by Tycho van der Ouderaa found at
+https://github.com/tychovdo/PacmanDQN/
 
 The Pacman AI projects were developed at UC Berkeley found at
 http://ai.berkeley.edu/project_overview.html

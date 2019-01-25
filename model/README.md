@@ -1,7 +1,6 @@
-** Parameters Folder: **
+** Model Folder **
 
-The npy files save the parameters necessary for loading DQN, Linear and WDQN agents.
+Here you can find the final models for the medium map used in the publication.
 
-The following variables are saved in the npy files:
-
-LIST
+For space reasons in GitHub the final models for the small map were not incluided.
+Please contact me if you want still to have them. 
