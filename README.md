@@ -1,5 +1,5 @@
 # Wide Deep Reinforcement Learning
-Wide Deep Reinforcement Learning (WDRL) in Pac-man with the new algorithm Wide Deep Q-networks (WDQN). 
+Wide Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). 
 
 
 ## Concept
@@ -15,9 +15,9 @@ In this way, developing the Wide Deep Q-Network algorithm.
 
 [![Demo](https://github.com/tychovdo/PacmanDQN/blob/master/videos/PacmanDQN_wingif.gif)](https://youtu.be/QilHGSYbjDQ)
 
-## Run models
-To run the models for replicating the study you can call the *runModels.sh* file.
-An example of it: 
+## Replication
+To run the models in order to replicate the best results of the study you can call the `runModels.sh` file.
+An example of it:
 
 
 ```
@@ -26,6 +26,7 @@ $ python3 pacman.py -p PacmanWDQN -n 101 -x 1 -g DirectionalGhost -l mediumClass
 
 Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghoths and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file *createRandomSeed.py* 
 
+For replicating 
 
 ## Example of how to train
 
@@ -37,44 +38,36 @@ $ python3 pacman.py -p PacmanDQN -n 6000 -x 5000 -l smallGrid
 ```
 
 ### Layouts
-Different layouts can be found and created in the `layouts` directory
+Different layouts can be found and created in the `layouts` directory.
 
 ### Parameters
 
-Parameters can be found in the `params` dictionary in `pacmanDQN_Agents.py`. <br />
+The hyperparameters used for training the agents can be found in the `dict` folder as `json` files. A complete description of this parameters can be found in the `README` file of the folder.
+
+In the `parameters` folder you can find the additional values needed as `npy` files to properly load the models. <br />
+ <br /> 
+Models are saved as "checkpoint" files in the `model` directory. <br />
+Load and save filenames can be set on the hyperparameters . <br />
  <br />
-Models are saved as "checkpoint" files in the `/saves` directory. <br />
-Load and save filenames can be set using the `load_file` and `save_file` parameters. <br />
- <br />
-Episodes before training starts: `train_start` <br />
-Size of replay memory batch size: `batch_size` <br />
-Amount of experience tuples in replay memory: `mem_size` <br />
-Discount rate (gamma value): `discount` <br />
-Learning rate: `lr` <br />
- <br />
-Exploration/Exploitation (ε-greedy): <br />
-Epsilon start value: `eps` <br />
-Epsilon final value: `eps_final` <br />
-Number of steps between start and final epsilon value (linear): `eps_step` <br />
+
 
 ## Citation
 
 Please cite this repository if it was useful for your research:
 
 ```
-@article{van2016deep,
-  title={Deep Reinforcement Learning in Pac-man},
-  subtitle={Bachelor Thesis},
-  author={van der Ouderaa, Tycho},
-  year={2016},
-  school={University of Amsterdam},
-  type={Bachelor Thesis},
-  pdf={https://esc.fnwi.uva.nl/thesis/centraal/files/f323981448.pdf},
+@inproceedings{montoya2019,
+  title={Wide Deep Reinforcement Learning for Grid-Based Action Games},
+  author={Montoya, Juan M. and Borgelt, Christian },
+  year={2019},
+  booktitle = {Proceedings of the Eleventh International Conference on Agents and Artificial Intelligence},
+  series = {ICAART'19},
+  publisher = {ICAART Press},
 }
 
 ```
 
-* [van der Ouderaa, Tycho (2016). Deep Reinforcement Learning in Pac-man.](https://esc.fnwi.uva.nl/thesis/centraal/files/f323981448.pdf)
+* [Montoya, Juan M. and Borgelt, Christian (2019). Wide Deep Reinforcement Learning for Grid-Based Action Games.](https://notfound.pdf)
 
 ## Requirements
 
