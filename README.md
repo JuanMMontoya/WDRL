@@ -24,7 +24,7 @@ An example of it:
 $ python3 pacman.py -p PacmanWDQN -n 101 -x 1 -g DirectionalGhost -l mediumClassic --path WDQN-mediumC-3feat --fixRandomSeed 6311
 ```
 
-Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghosts(follows Pac-man actively) and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file *createRandomSeed.py* 
+Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghosts(follows Pac-man actively) and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file `createRandomSeed.py`. 
 
 To replicate the training results of the study, you can call the `runExperiments.sh` file. Please follow the instruction of this file.
 
@@ -37,8 +37,8 @@ are used for training. In addition, the directional ghosts are used instead of t
 $ python3 pacman.py -p PacmanWDQN -n 6000 -x 5000 -g DirectionalGhost -l smallClassic --path WDQN-smallC-feat3
 ```
 
-The hyperparameters of `PacmannWDQN_agents.py` are in the `json` file `WDQN-smallC-feat3` in the directory *dict/smallC*.
-### Layouts
+The hyperparameters of `PacmannWDQN_agents.py` are in the `json` file `WDQN-smallC-feat3` in the directory `dict/smallC`.
+### Layout
 Different layouts can be found and created in the `layouts` directory.
 
 ### Parameters
