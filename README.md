@@ -24,19 +24,20 @@ An example of it:
 $ python3 pacman.py -p PacmanWDQN -n 101 -x 1 -g DirectionalGhost -l mediumClassic --path WDQN-mediumC-3feat --fixRandomSeed 6311
 ```
 
-Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghoths and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file *createRandomSeed.py* 
+Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghosts(follows Pac-man actively) and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file *createRandomSeed.py* 
 
-For replicating 
+To replicate the training results of the study, you can call the `runExperiments.sh` file. Please follow the instruction of this file.
 
-## Example of how to train
+## Train
 
-Run a model on `smallGrid` layout for 6000 episodes, of which 5000 episodes
-are used for training.
+Run a model on the `smallClassic` layout for 6000 episodes, of which 5000 episodes
+are used for training. In addition, the directional ghosts are used instead of the random ghosts
 
 ```
-$ python3 pacman.py -p PacmanDQN -n 6000 -x 5000 -l smallGrid
+$ python3 pacman.py -p PacmanWDQN -n 6000 -x 5000 -g DirectionalGhost -l smallClassic --path WDQN-smallC-feat3
 ```
 
+The hyperparameters of `PacmannWDQN_agents.py` are in the `json` file `WDQN-smallC-feat3` in the directory *dict/smallC*.
 ### Layouts
 Different layouts can be found and created in the `layouts` directory.
 
@@ -49,6 +50,7 @@ In the `parameters` folder you can find the additional values needed as `npy` fi
 Models are saved as "checkpoint" files in the `model` directory. <br />
 Load and save filenames can be set on the hyperparameters . <br />
  <br />
+In addition, the memory replay (or experience replay) for each agent is saved in the directory `data`.
 
 
 ## Citation
@@ -76,8 +78,11 @@ Please cite this repository if it was useful for your research:
 
 ## Acknoledgements
 
-DQN Framework by  (made for ATARI / Arcade Learning Environment)
-* [deepQN_tensorflow](https://github.com/mrkulk/deepQN_tensorflow) ([https://github.com/mrkulk/deepQN_tensorflow](https://github.com/mrkulk/deepQN_tensorflow))
+DQN implementation of Pac-man by Tycho van der Ouderaa:
+* [DQN-Pac-man](https://github.com/tychovdo/PacmanDQN/)
 
 Pac-man implementation by UC Berkeley:
-* [The Pac-man Projects - UC Berkeley](http://ai.berkeley.edu/project_overview.html) ([http://ai.berkeley.edu/project_overview.html](http://ai.berkeley.edu/project_overview.html))
+* [The Pac-man Projects - UC Berkeley](http://ai.berkeley.edu/project_overview.html)
+
+Wide & Deep Learning by Heng-Tze Cheng et al.:
+* [Wide & Deep Learning](https://ai.googleblog.com/2016/06/wide-deep-learning-better-together-with.html)

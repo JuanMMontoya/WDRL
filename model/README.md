@@ -1,4 +1,4 @@
-** Model Folder **
+# Model Folder
 
 Here you can find the final models for the medium map used in the publication.
 
