@@ -335,7 +335,7 @@ class PacmanWDQN(Agent):
                         self.params["dcy_lrl_val"], self.params["only_dqn"], self.params["only_lin"], self.params[
                             "load_file"], self.params["num_games"], self.params["seed"], self.params["save_logs"]
 
-                    # Load saved parameters
+                    # Load saved parameters and hyperparameters of the new starting point
                     self.last_steps, self.accumTrainRewards, self.numeps, self.params, self.local_cnt, self.cnt, self.sub_dir = np.load(
                         load_path)  #
                     orig_num_training = self.params["num_training"]

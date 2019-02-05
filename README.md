@@ -6,7 +6,7 @@ Wide Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new 
 
 Wide Deep Reinforcement Learning search to combine both the linear function (wide component) and the non-linear function approximation (deep component). 
 For our research, we extended the popular Deep Q-Network (DQN) algorithm by mixing the linear combination of features with the convolutional neural networks as illustrated below.
-In this way, developing the Wide Deep Q-Network algorithm. 
+In this way, developing the WDQN algorithm. 
 
 ![](media/WDRL.jpg?raw=true)
 
@@ -24,7 +24,7 @@ An example of it:
 $ python3 pacman.py -p PacmanWDQN -n 101 -x 1 -g DirectionalGhost -l mediumClassic --path WDQN-mediumC-3feat --fixRandomSeed 6311
 ```
 
-Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghosts(follows Pac-man actively) and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file `createRandomSeed.py`. 
+Where the program runs on the medium map, evaluating the model for 100 games, using the directional ghosts (follows Pac-man actively) and the WDQN algoritm with 3 features. In addition, the fix random seed "6111" is used to guarantee replication. To see how this random seed was selected open the file `createRandomSeed.py`. 
 
 To replicate the training results of the study, you can call the `runExperiments.sh` file. Please follow the instruction of this file.
 
@@ -45,12 +45,12 @@ Different layouts can be found and created in the `layouts` directory.
 
 The hyperparameters used for training the agents can be found in the `dict` folder as `json` files. A complete description of this parameters can be found in the `README` file of the folder.
 
-In the `parameters` folder you can find the additional values needed as `npy` files to properly load the models. <br />
+In the `parameters` folder you can find the additional values saved as `npy` files to properly load the python parameters of the model (e.g. for loading and starting in a certain training step). <br />
  <br /> 
 Models are saved as "checkpoint" files in the `model` directory. <br />
 Load and save filenames can be set on the hyperparameters . <br />
  <br />
-In addition, the memory replay (or experience replay) for each agent is saved in the directory `data`.
+In addition, the memory replay (or experience replay) for each agent is saved in the directory `data`, guarantying to continue training the model in the exact same state.
 
 
 ## Citation

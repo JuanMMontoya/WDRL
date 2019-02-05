@@ -1,7 +1,8 @@
 #!/bin/bash
 #WARNING: For replicating study put the json files
 # into dict/mediumC and dict/smallC respectively.
-#MEDIUM MAP
+
+###MEDIUM MAP###
 
 #DQN
 python3 pacman.py -p PacmanWDQN -n 11000 -x 11000 -g DirectionalGhost -l mediumClassic --path DQN-mediumC-a --fixRandomSeed 1
@@ -39,7 +40,7 @@ python3 pacman.py -p PacmanWDQN -n 11000 -x 11000 -g DirectionalGhost -l mediumC
 python3 pacman.py -p PacmanWDQN -n 11000 -x 11000 -g DirectionalGhost -l mediumClassic --path LIN-mediumC-e --fixRandomSeed 5
 
 
-#SMALL MAP
+###SMALL MAP###
 
 #DQN
 python3 pacman.py -p PacmanWDQN -n 11000 -x 11000 -g DirectionalGhost -l smallClassic --path DQN-smallC-a --fixRandomSeed 1
