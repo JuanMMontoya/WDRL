@@ -10,7 +10,7 @@ Amount of experience tuples in replay memory: `mem_size` <br />
 Discount rate (gamma value): `discount` <br />
 Update target network after n amount of episodes: `target_update_network` <br />
 The probability that each element is kept: `dropout` <br />
-Counts of steps of linear model (default nUll): `global_step_lin` <br />
+Counts of steps of linear model (default null): `global_step_lin` <br />
 Counts of steps of DQN model (default null): `global_step_dqn` <br />
 **Learning rate:** <br />
 DQN learning rate: `lr_dqn` <br />
