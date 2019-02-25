@@ -14,12 +14,17 @@ In this way, developing the WDQN algorithm.
 ## Demo
 
 ### DQN
-[![Demo](media/dqn.gif)](https://youtu.be/QilHGSYbjDQ)
+[![Demo](media/dqn.gif)]()
 
 
+## Linear Combination of Features
+[![Demo](media/lin.gif)]()
 
 
-## Linear Combination of Feautures
+## WDQN with 2 Features
+[![Demo](media/wdqn2feat.gif)]()
+
+
 ## Replication
 To run the models in order to replicate the best results of the study you can call the `runModels.sh` file.
 An example of it:
