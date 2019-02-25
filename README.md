@@ -13,8 +13,14 @@ In this way, developing the WDQN algorithm.
 
 ## Demo
 
+### DQN
 [![Demo](https://github.com/tychovdo/PacmanDQN/blob/master/videos/PacmanDQN_wingif.gif)](https://youtu.be/QilHGSYbjDQ)
 
+[![Demo](https://github.com/tychovdo/PacmanDQN/blob/master/videos/PacmanDQN_wingif.gif)](https://youtu.be/QilHGSYbjDQ)
+
+
+
+## Linear Combination of Feautures
 ## Replication
 To run the models in order to replicate the best results of the study you can call the `runModels.sh` file.
 An example of it:
@@ -79,10 +85,10 @@ Please cite this repository if it was useful for your research:
 ## Acknoledgements
 
 DQN implementation of Pac-man by Tycho van der Ouderaa:
-* [DQN-Pac-man](https://github.com/tychovdo/PacmanDQN/)
+* [DQN-Pac-Man](https://github.com/tychovdo/PacmanDQN/)
 
 Pac-man implementation by UC Berkeley:
-* [The Pac-man Projects - UC Berkeley](http://ai.berkeley.edu/project_overview.html)
+* [The Pac-Man Projects - UC Berkeley](http://ai.berkeley.edu/project_overview.html)
 
 Wide & Deep Learning by Heng-Tze Cheng et al.:
 * [Wide & Deep Learning](https://ai.googleblog.com/2016/06/wide-deep-learning-better-together-with.html)
