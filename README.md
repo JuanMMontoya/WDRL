@@ -14,7 +14,7 @@ In this way, developing the WDQN algorithm.
 ## Demo
 
 ### DQN
-[![Demo](https://github.com/JuanMMontoya/WDRL/tree/master/media/dqn.gif)](https://youtu.be/QilHGSYbjDQ)
+[![Demo](media/dqn.gif)](https://youtu.be/QilHGSYbjDQ)
 
 
 
