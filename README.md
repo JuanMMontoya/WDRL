@@ -1,10 +1,10 @@
-# Wide Deep Reinforcement Learning
-Wide Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). 
+# Wide & Deep Reinforcement Learning
+Wide and Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). 
 
 
 ## Concept
 
-Wide Deep Reinforcement Learning search to combine both the linear function (wide component) and the non-linear function approximation (deep component). 
+Wide and Deep Reinforcement Learning search to combine both the linear function (wide component) and the non-linear function approximation (deep component). 
 For our research, we extended the popular Deep Q-Network (DQN) algorithm by mixing the linear combination of features with the convolutional neural networks as illustrated below.
 In this way, developing the WDQN algorithm. 
 
