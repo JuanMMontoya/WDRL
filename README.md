@@ -69,12 +69,12 @@ Please cite this repository if it was useful for your research:
 
 ```
 @inproceedings{montoya2019,
-  title={Wide Deep Reinforcement Learning for Grid-Based Action Games},
+  title={Wide and Deep Reinforcement Learning for Grid-Based Action Games},
   author={Montoya, Juan M. and Borgelt, Christian },
   year={2019},
   booktitle = {Proceedings of the Eleventh International Conference on Agents and Artificial Intelligence},
   series = {ICAART'19},
-  publisher = {ICAART Press},
+  publisher = {SCITEPRESS},
 }
 
 ```
