@@ -1,5 +1,5 @@
 # Wide & Deep Reinforcement Learning
-Wide and Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). You can download the paper [here](http://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=73132)). 
+Wide and Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). You can download the paper [here](http://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=73132). 
 
 
 ## Concept
