@@ -1,5 +1,5 @@
 # Wide & Deep Reinforcement Learning
-Wide and Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). You can download the paper [here](http://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=73132). 
+Wide and Deep Reinforcement Learning (WDRL) implementation in Pac-man using our new algorithm Wide Deep Q-networks (WDQN). You can download the paper [here](http://www.scitepress.org/PublicationsDetail.aspx?ID=0bLGtol9A6g=&t=1). 
 
 
 ## Concept
@@ -68,13 +68,16 @@ In addition, the memory replay (or experience replay) for each agent is saved in
 Please cite this repository if it was useful for your research:
 
 ```
-@inproceedings{montoya2019,
-  title={Wide and Deep Reinforcement Learning for Grid-Based Action Games},
-  author={Montoya, Juan M. and Borgelt, Christian },
-  year={2019},
-  booktitle = {Proceedings of the Eleventh International Conference on Agents and Artificial Intelligence},
-  series = {ICAART'19},
-  publisher = {SCITEPRESS}
+@inproceedings{icaart19,
+author={Juan M. Montoya. and Christian Borgelt.},
+title={Wide and Deep Reinforcement Learning for Grid-based Action Games},
+booktitle={Proceedings of the 11th International Conference on Agents and Artificial Intelligence - Volume 2: ICAART,},
+year={2019},
+pages={50-59},
+publisher={SciTePress},
+organization={INSTICC},
+doi={10.5220/0007313200500059},
+isbn={978-989-758-350-6},
 }
 
 ```
